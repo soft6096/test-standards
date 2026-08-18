@@ -11,8 +11,11 @@
 每个测试方法遵循 **Arrange-Act-Assert** 三段，空行分隔：
 
 ```java
+/**
+ * 用例：合法入参创建订单，应返回订单号。
+ */
 @Test
-void createOrder_shouldReturnOrderId_whenValid() {
+void createOrderShouldReturnOrderIdWhenValid() {
     // Arrange
     OrderCreateDTO dto = new OrderCreateDTO();
     dto.setUserId(100L);
@@ -27,7 +30,10 @@ void createOrder_shouldReturnOrderId_whenValid() {
 ```
 
 - 禁止测试方法内串多个独立场景（一个测试一个行为）
-- 方法命名：`被测方法_预期行为_条件`（`createOrder_shouldThrow_whenUserNotExist`）
+- **测试方法命名：英文驼峰**，格式 `被测行为 + 条件 + 期望`（`createOrderShouldThrowWhenUserNotExist`）
+  - 禁止中文方法名、禁止拼音方法名（`创建订单_合法入参_返回订单号` / `chuangjian` 均为反例）
+  - 用例场景用中文写在方法 Javadoc（`/** 用例：非法入参（商品不存在）应返回 400 + 错误码。 */`）
+  - 断言失败时的可读性靠英文方法名 + 中文注释保证（方法名可读、注释可追溯）
 
 ### 2. Mock 规则
 
@@ -36,8 +42,11 @@ void createOrder_shouldReturnOrderId_whenValid() {
 - `when` 给必要返回值；验证交互用 `verify`（次数/顺序）
 
 ```java
+/**
+ * 用例：取消待支付订单，应更新状态为已取消。
+ */
 @Test
-void cancelOrder_shouldUpdateStatus_whenPending() {
+void cancelOrderShouldUpdateStatusWhenPending() {
     // Arrange
     when(orderMapper.selectById(1L)).thenReturn(pendingOrder);
 
@@ -96,8 +105,11 @@ void testCreate() {
 
 ```java
 // 正例：单场景 + 行为断言
+/**
+ * 用例：合法入参创建订单，应只落库一次。
+ */
 @Test
-void createOrder_shouldPersistOnce_whenValid() {
+void createOrderShouldPersistOnceWhenValid() {
     OrderCreateDTO dto = new OrderCreateDTO();
     dto.setUserId(100L);
 
@@ -111,11 +123,12 @@ void createOrder_shouldPersistOnce_whenValid() {
 
 - 测试金字塔：底层单测多、集成少、E2E 更少
 - 每个 bug 修复先写复现测试（红）→ 修复 → 绿（防回归）
-- 测试命名表达业务语义，不写测试的人也能看懂
+- 测试命名表达业务语义（英文驼峰），中文用例说明写 Javadoc，不写测试的人也能看懂
 
 ## 自检清单
 
 - [ ] AAA 结构，一个测试一个行为
+- [ ] 方法名英文驼峰（禁止中文/拼音方法名），用例中文写 Javadoc
 - [ ] 依赖全 mock，无真实外部服务
 - [ ] AssertJ 流式断言，无裸 assertEquals
 - [ ] 无 Thread.sleep

@@ -24,6 +24,7 @@ description: 约束 AI 生成测试代码的规范集（单元测试/契约测�
 
 - 测试是验收标准：禁止改断言/删测试/@Disabled（编码不得迁就测试）
 - 一个测试一个行为，AAA 结构；断言用 AssertJ 流式
+- **测试方法名英文驼峰**（`createOrderShouldReturn400WhenUserNotExist`），禁止中文/拼音方法名；用例中文写 Javadoc
 - 依赖全 mock，不测实现细节；无 Thread.sleep
 - 契约测试覆盖三态（合法/非法/边界），先红后绿
 - 测试数据工厂化，复杂 SQL 用 Testcontainers 真实库

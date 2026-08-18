@@ -29,6 +29,9 @@
 - 不测业务细节（那是单测职责），只测接口边界
 
 ```java
+/**
+ * 用例：非法入参（用户不存在）应返回 400 + 错误码。
+ */
 @WebMvcTest(OrderController.class)
 class OrderControllerContractTest {
 
@@ -39,7 +42,7 @@ class OrderControllerContractTest {
     OrderService orderService;
 
     @Test
-    void createOrder_shouldReturn400_whenUserNotExist() throws Exception {
+    void createOrderShouldReturn400WhenUserNotExist() throws Exception {
         when(orderService.create(any())).thenThrow(new BusinessException(ErrorCode.USER_NOT_FOUND, "用户不存在"));
 
         mockMvc.perform(post("/api/orders")
@@ -61,6 +64,7 @@ class OrderControllerContractTest {
 ### 5. 归属与维护
 
 - 契约测试放 `src/test/java/<对应包>/`，按接口分组命名 `XxxContractTest`
+- **测试方法名英文驼峰**：`被测行为 + 条件 + 期望`（`createOrderShouldReturn400WhenUserNotExist`），禁止中文/拼音方法名；用例场景中文写方法 Javadoc
 - 技术方案变更 → 同步改契约测试（方案是契约，测试是落地）
 - 契约测试与实现解耦：不依赖实现细节，只依赖接口契约
 
@@ -68,8 +72,11 @@ class OrderControllerContractTest {
 
 ```java
 // 反例：只测合法路径 + 断言实现细节
+/**
+ * 用例：创建订单（反例——不关心内部调用）。
+ */
 @Test
-void createOrder_shouldWork() {
+void createOrderShouldWork() {
     // 断言内部 mapper 调用次数 —— 契约测试不应关心
     verify(orderMapper).insert(any());
 }
@@ -77,18 +84,28 @@ void createOrder_shouldWork() {
 
 ```java
 // 正例：三态覆盖
+/**
+ * 用例：合法入参创建订单应返回 200。
+ */
 @Test
-void createOrder_shouldReturn200_whenValid() { /* 合法 */ }
+void createOrderShouldReturn200WhenValid() { /* 合法 */ }
+/**
+ * 用例：非法入参（商品不存在）应返回 400。
+ */
 @Test
-void createOrder_shouldReturn400_whenSkuNotExist() { /* 非法 */ }
+void createOrderShouldReturn400WhenSkuNotExist() { /* 非法 */ }
+/**
+ * 用例：重复提交应返回 409（幂等）。
+ */
 @Test
-void createOrder_shouldReturn409_whenDuplicateSubmit() { /* 边界：幂等 */ }
+void createOrderShouldReturn409WhenDuplicateSubmit() { /* 边界：幂等 */ }
 ```
 
 ## 自检清单
 
 - [ ] 三态（合法/非法/边界）全部覆盖
 - [ ] 断言状态码 + 错误码 + 响应结构
+- [ ] 方法名英文驼峰，用例中文写 Javadoc
 - [ ] 与验收场景一一对应
 - [ ] 先红后绿流程执行
 - [ ] 无修改断言/删除测试/Disabled
