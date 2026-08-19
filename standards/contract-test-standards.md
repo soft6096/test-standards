@@ -25,7 +25,7 @@
 ### 3. 接口契约测试
 
 - HTTP 接口：`@SpringBootTest + MockMvc`（WebMvc）或 `@WebMvcTest` 切片 + MockMvc，断言状态码 + 响应体结构 + 错误码
-- 契约关注：入参校验、响应结构（Result code/message/data）、错误码映射、权限
+- 契约关注：入参校验、响应结构（`Response` code/message/data）、错误码映射、权限
 - 不测业务细节（那是单测职责），只测接口边界
 
 ```java
