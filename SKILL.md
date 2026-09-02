@@ -1,6 +1,6 @@
 ---
 name: test-standards
-description: 约束 AI 生成测试代码的规范集（单元测试/契约测试/测试数据）。编写单元测试、接口契约测试、测试数据准备、审查测试代码时加载；对接 ai-dev-workflow 契约测试流程（4.2 先红后绿）。触发场景：写测试、写单测、写契约测试、测试数据、覆盖率、Testcontainers、Mockito、JUnit、测试规范审查。测试原则适用任何语言，示例以 Java（JUnit5 + Mockito + Spring Boot Test）为主。
+description: 约束 AI 生成测试代码的规范集（单元测试/契约测试/测试数据）。编写单元测试、接口契约测试、测试数据准备、审查测试代码时必须加载；对接 ai-dev-workflow 契约测试流程（4.2 先红后绿）。触发场景：写测试、写单测、写契约测试、测试数据、覆盖率、Testcontainers、Mockito、JUnit、测试规范审查。测试原则适用任何语言，示例以 Java（JUnit5 + Mockito + Spring Boot Test）为主。
 ---
 
 # Test Standards
